@@ -30,7 +30,7 @@ class ViewCart extends View
             <!-- Répétez la div "cart-item" pour chaque produit dans le panier -->
             <div class="cart-summary">
                 <h3>Total (0 article): 00,00 €</h3>
-                <button>Passer à la caisse</button>
+                <a href="/order"><button>Passer à la caisse</button></a>
             </div>
         </div>
     </main>

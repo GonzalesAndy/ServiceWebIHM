@@ -14,8 +14,10 @@ include_once 'gui/ViewLogin.php';
 include_once 'gui/ViewError.php';
 include_once 'gui/ViewHome.php';
 include_once 'gui/ViewCart.php';
+include_once 'gui/ViewOrder.php';
+include_once 'gui/ViewProduct.php';
 
-use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart};
+use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct};
 use control\{Controllers, Presenter};
 use data\DataAccess;
 use service\{AnnoncesChecking, UserCreation};
@@ -87,7 +89,12 @@ elseif ('/seConnecter' == $uri) {
 
     $vueLogin->display();
 }
-elseif('/cart' == $uri){
+elseif ('/product' == $uri) {
+    $viewProduct = new ViewProduct( $layout );
+
+    $vueProduits->display();
+}
+elseif('/cart' == $uri && isset($_SESSION['login'])){
     if (!isset($_SESSION['login'])) {
         var_dump($_SESSION['login']);
         $error_msg='Vous devez être connecté pour accéder à votre panier';
@@ -97,6 +104,10 @@ elseif('/cart' == $uri){
     $viewCart = new ViewCart( $layout );
 
     $viewCart->display();
+}
+elseif('/order' == $uri && isset($_SESSION['login'])) {
+    $vueOrder = new ViewOrder( $layout );
+    $vueOrder->display();
 }
 elseif ( '/error' == $uri ){
     // Affichage d'un message d'erreur
