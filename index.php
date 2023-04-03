@@ -22,7 +22,7 @@ include_once 'gui/ViewProduct.php';
 use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct};
 use control\{Controllers, Presenter};
 use data\{DataAccess, ApiProductAccess};
-use service\{UserCreation, ProductChecking};
+use service\{UserCreation, ProductChecking, AnnoncesChecking};
 
 $data = null;
 try {
@@ -38,6 +38,7 @@ $controller = new Controllers();
 $productCheck = new ProductChecking();
 $userCreation = new UserCreation() ;
 $presenter = new Presenter($productCheck);
+$annoncesCheck = new AnnoncesChecking();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -93,10 +94,13 @@ elseif ('/seConnecter' == $uri) {
 
     $vueLogin->display();
 }
-elseif ('/product' == $uri) {
-    $viewProduct = new ViewProduct( $layout);
+//page de produit avec id
+elseif (preg_match('/\/product\/[0-9]+/', $uri)) {
+    $id = explode('/', $uri)[2];
+    $controller->productPageAction($apiProduct, $productCheck, $id);
+    $viewProduct = new ViewProduct( $layout, $presenter, $id);
 
-    $vueProduits->display();
+    $viewProduct->display();
 }
 elseif('/cart' == $uri && isset($_SESSION['login'])){
     if (!isset($_SESSION['login'])) {

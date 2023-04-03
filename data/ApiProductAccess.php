@@ -1,9 +1,8 @@
 <?php
-
 namespace data;
 
-use domain\Product;
-
+use domain\{Product};
+include_once "domain/Product.php";
 class ApiProductAccess {
 
     public function getAllProducts() {
@@ -20,12 +19,28 @@ class ApiProductAccess {
         $result = json_decode($response, true);
         $products = array();
         
-        $product1 = new Product(1, "Pomme", 1.5, "Une pomme", 10, "kg");
-        $product2 = new Product(2, "Poire", 1.5, "Une poire", 10, "kg");
-        $product3 = new Product(3, "Banane", 1.5, "Une banane", 10, "kg");
+        foreach ($result as $product) {
+            $products[] = new Product($product['id_product'], $product['name'], $product['price'], $product['description'], $product['stock'], $product['quantityType']);
+        }
 
-        $products[] = $product1;
         return $products;
 
+    }
+
+    public function getProduct($id) {
+        $url = "http://localhost:8080/usersAndProducts-1.0-SNAPSHOT/api/products/" . $id;
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+        //for each create a Product.php object
+        $result = json_decode($response, true);
+        $product = new Product($result['id'], $result['name'], $result['price'], $result['description'], $result['stock'], $result['quantityType']);
+
+        return $product;
     }
 }

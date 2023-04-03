@@ -21,4 +21,11 @@ class ProductChecking
             $this->productsTxt[] = array('id' => $product->getId(), 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
         }
     }
+
+    public function getProduct($data, $id)
+    {
+        $product = $data->getProduct($id);
+
+        $this->productsTxt = array('id' => $product->getId(), 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+    }
 }
