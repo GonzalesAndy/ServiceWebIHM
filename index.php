@@ -2,12 +2,14 @@
 
 // charge et initialise les bibliothèques globales
 include_once 'data/DataAccess.php';
+include_once 'data/ApiProductAccess.php';
 
 include_once 'control/Controllers.php';
 include_once 'control/Presenter.php';
 
 include_once 'service/AnnoncesChecking.php';
 include_once 'service/UserCreation.php';
+include_once 'service/ProductChecking.php';
 
 include_once 'gui/Layout.php';
 include_once 'gui/ViewLogin.php';
@@ -19,8 +21,8 @@ include_once 'gui/ViewProduct.php';
 
 use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct};
 use control\{Controllers, Presenter};
-use data\DataAccess;
-use service\{AnnoncesChecking, UserCreation};
+use data\{DataAccess, ApiProductAccess};
+use service\{UserCreation, ProductChecking};
 
 $data = null;
 try {
@@ -31,10 +33,11 @@ try {
     die();
 }
 
+$apiProduct = new ApiProductAccess();
 $controller = new Controllers();
-$annoncesCheck = new AnnoncesChecking() ;
+$productCheck = new ProductChecking();
 $userCreation = new UserCreation() ;
-$presenter = new Presenter($annoncesCheck);
+$presenter = new Presenter($productCheck);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -79,8 +82,9 @@ if ( '/' == $uri || '/index.php' == $uri || '/logout' == $uri) {
         header('Location: /');
     }
 
+    $controller->productsAction($apiProduct, $productCheck);
     
-    $viewHome = new ViewHome( $layout );
+    $viewHome = new ViewHome( $layout, $presenter);
 
     $viewHome->display();
 }
@@ -90,7 +94,7 @@ elseif ('/seConnecter' == $uri) {
     $vueLogin->display();
 }
 elseif ('/product' == $uri) {
-    $viewProduct = new ViewProduct( $layout );
+    $viewProduct = new ViewProduct( $layout);
 
     $vueProduits->display();
 }

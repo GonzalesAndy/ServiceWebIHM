@@ -5,7 +5,7 @@ include_once "View.php";
 
 class ViewHome extends View
 {
-    public function __construct($layout)
+    public function __construct($layout, $presenter)
     {
         parent::__construct($layout);
 
@@ -22,6 +22,8 @@ class ViewHome extends View
                     </div>
                     <!-- Répétez la div "product" pour chaque produit que vous souhaitez afficher -->
                 </div>';
+        $this->content .= $presenter->getAllProductsHTML();
+
         $this->content .= '</main>';
     }
 }

@@ -22,6 +22,7 @@ class ViewProduct extends View
                     </div>
                     <!-- Répétez la div "product" pour chaque produit que vous souhaitez afficher -->
                 </div>';
+
         $this->content .= '</main>';
     }
 }

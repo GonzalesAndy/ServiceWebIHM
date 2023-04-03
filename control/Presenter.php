@@ -2,38 +2,23 @@
 namespace control;
 class Presenter
 {
-    protected $annoncesCheck;
+    protected $productCheck;
 
-    public function __construct($annoncesCheck)
+    public function __construct($productCheck)
     {
-        $this->annoncesCheck = $annoncesCheck;
+        $this->productCheck = $productCheck;
     }
 
-    public function getAllAnnoncesHTML()
-    {
+
+    public function getAllProductsHTML() {
         $content = null;
-        if ($this->annoncesCheck->getAnnoncesTxt() != null) {
-            $content = '<h1>List of Posts</h1>  <ul>';
-            foreach ($this->annoncesCheck->getAnnoncesTxt() as $post) {
-                $content .= ' <li>';
-                $content .= '<a href="/annonces/index.php/post?id=' . $post['id'] . '">' . $post['title'] . '</a>';
-                $content .= ' </li>';
+        if ($this->productCheck->getProductsTxt() != null) {
+            foreach ($this->productCheck->getProductsTxt() as $product) {
+                $content .= "<tr><td>" . $product['id'] . "</td><td>" . $product['name'] . "</td><td>" . $product['price'] . "</td><td>" . $product['description'] . "</td><td>" . $product['stock'] . "</td><td>" . $product['quantityType'] . "</td></tr>";
             }
-            $content .= '</ul>';
         }
-        return $content;
-    }
-
-    public function getCurrentPostHTML()
-    {
-        $content = null;
-        if ($this->annoncesCheck->getAnnoncesTxt() != null) {
-            $post = $this->annoncesCheck->getAnnoncesTxt()[0];
-
-            $content = '<h1>' . $post['title'] . '</h1>';
-            $content .= '<div class="date">' . $post['date'] . '</div>';
-            $content .= '<div class="body">' . $post['body'] . '</div>';
-        }
+        if ($content == null)
+            $content = "<tr><td colspan='6'>Aucun produit trouvé</td></tr>";
         return $content;
     }
 }
