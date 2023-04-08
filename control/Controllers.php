@@ -19,4 +19,10 @@ class Controllers
     {
         $productChecking->getProduct($api, $id);
     }
+
+    public function createUserAction($api, $userCreation, $mail, $name, $pwd)
+    {
+        $result = $userCreation->createUser($api, $mail, $name, $pwd);
+        return $result;
+    }
 }

@@ -3,23 +3,39 @@
 namespace domain;
 class User
 {
-    protected $login;
-    protected $password;
-    protected $name;
-    protected $firstName;
-    protected  $date;
+    protected $id;
 
-    public function __construct($login, $password, $name, $firstName, $date )
+    protected $mail;
+
+    protected $name;
+
+    protected $pwd;
+
+    public function __construct($id, $mail, $name, $pwd)
     {
-        $this->login = $login;
-        $this->password = $password;
+        $this->id = $id;
+        $this->mail = $mail;
         $this->name = $name;
-        $this->firstName = $firstName;
-        $this->date = $date;
+        $this->pwd = $pwd;
     }
 
-    public function getLogin()
+    public function getId()
     {
-        return $this->login;
+        return $this->id;
+    }
+
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getPwd()
+    {
+        return $this->pwd;
     }
 }

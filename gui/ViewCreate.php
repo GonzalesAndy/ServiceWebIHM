@@ -3,7 +3,7 @@ namespace gui;
 
 include_once "View.php";
 
-class ViewLogin extends View
+class ViewCreate extends View
 {
     public function __construct($layout)
     {
@@ -14,17 +14,19 @@ class ViewLogin extends View
         $this->content = '
         <main>
             <div class="login-container">
-            <h2>Connexion</h2>
-            <form method="post" action="/">
+            <h2>Créer un compte</h2>
+            <form method="get" action="/creation">
+                <label for="mail">Votre adresse mail</label>
+                <input type="email" id="mail" name="mail" required>
                 <label for="login">Votre identifiant</label>
                 <input type="text" id="login" name="login" required>
                 <label for="password">Mot de passe</label>
                 <input type="password" name=password id="password" required>
-                <button id=loginButton gtype="submit">Se connecter</button>
+                <button id=loginButton gtype="submit">Créer un compte</button>
             </form>
             <div class="register">
-                <p>Nouveau client ?</p>
-                <a href="/creerCompte">Créer un compte</a>
+                <p>Déjà client ?</p>
+                <a href="/seConnecter">Se connecter</a>
             </div>
         </div>
         </main>

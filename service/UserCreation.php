@@ -4,8 +4,10 @@ namespace service;
 
 class UserCreation
 {
-    public function createUser($login, $password, $name, $firstName, $data){
-        return ($data->createUser($login, $password, $name, $firstName) != false );
+    public function createUser($data, $mail, $name, $pwd)
+    {
+        $result = $data->createUser($mail, $name, $pwd);
+        return $result;
     }
 
 }

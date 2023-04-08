@@ -3,6 +3,7 @@
 // charge et initialise les bibliothèques globales
 include_once 'data/DataAccess.php';
 include_once 'data/ApiProductAccess.php';
+include_once 'data/ApiUserCreation.php';
 
 include_once 'control/Controllers.php';
 include_once 'control/Presenter.php';
@@ -18,22 +19,15 @@ include_once 'gui/ViewHome.php';
 include_once 'gui/ViewCart.php';
 include_once 'gui/ViewOrder.php';
 include_once 'gui/ViewProduct.php';
+include_once 'gui/ViewCreate.php';
 
-use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct};
+use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct, ViewCreate};
 use control\{Controllers, Presenter};
-use data\{DataAccess, ApiProductAccess};
+use data\{DataAccess, ApiProductAccess, ApiUserCreation};
 use service\{UserCreation, ProductChecking, AnnoncesChecking};
 
-$data = null;
-try {
-    $data = new DataAccess( new PDO('mysql:host=mysql-flouvat.alwaysdata.net;dbname=flouvat_annonces_db', 'flouvat_annonces', 'flouvat_annonces_mdp') );
-
-} catch (PDOException $e) {
-    print "Erreur de connexion !: " . $e->getMessage() . "<br/>";
-    die();
-}
-
 $apiProduct = new ApiProductAccess();
+$apiUserCreation = new ApiUserCreation();
 $controller = new Controllers();
 $productCheck = new ProductChecking();
 $userCreation = new UserCreation() ;
@@ -89,11 +83,27 @@ if ( '/' == $uri || '/index.php' == $uri || '/logout' == $uri) {
 
     $viewHome->display();
 }
+elseif ('/creation' == $uri) {
+    if (($resultat = $controller->createUserAction($apiUserCreation, $userCreation, $_GET['mail'], $_GET['login'], $_GET['password'])) == false) {
+        $_SESSION['error'] = 'Erreur lors de la création du compte, username pris.';
+        header('Location: /error');
+    }
+    else {
+        header('Location: /seConnecter');
+    }
+
+}
 elseif ('/seConnecter' == $uri) {
     $vueLogin = new ViewLogin( $layout );
 
     $vueLogin->display();
 }
+elseif ('/creerCompte' == $uri) {
+    $viewCreate = new ViewCreate( $layout );
+
+    $viewCreate->display();
+}
+
 //page de produit avec id
 elseif (preg_match('/\/product\/[0-9]+/', $uri)) {
     $id = explode('/', $uri)[2];
@@ -102,12 +112,12 @@ elseif (preg_match('/\/product\/[0-9]+/', $uri)) {
 
     $viewProduct->display();
 }
-elseif('/cart' == $uri && isset($_SESSION['login'])){
+elseif('/cart' == $uri){
     if (!isset($_SESSION['login'])) {
         var_dump($_SESSION['login']);
-        $error_msg='Vous devez être connecté pour accéder à votre panier';
+        $_SESSION['error']='Vous devez être connecté pour accéder à votre panier';
         $redirect = '/';
-        $uri='/error' ;
+        header('Location: /error');
     }
     $viewCart = new ViewCart( $layout );
 
@@ -118,10 +128,7 @@ elseif('/order' == $uri && isset($_SESSION['login'])) {
     $vueOrder->display();
 }
 elseif ( '/error' == $uri ){
-    // Affichage d'un message d'erreur
-
-    $vueError = new ViewError( $layout, $error_msg, $redirect );
-
+    $vueError = new ViewError( $layout, $_SESSION['error'], $redirect );
     $vueError->display();
 }
 else {
