@@ -54,6 +54,7 @@ if( !isset($_SESSION['login']) ) {
     // Si la page d'origine est le formulaire de connexion ou de création de compte
     if( isset($_POST['login']) && isset($_POST['password']) )
     {
+        // Tentative d'authentification
         $resultLog = $controller->authenticateAction($_POST['login'], $_POST['password'], $apiUserAccess, $userCheck);
         if( $resultLog  == false){
             $_SESSION['error'] = 'Erreur d\'authentification';
@@ -71,12 +72,12 @@ else
     // Récupération du login si l'utilisateur est déjà connecté
     $login = $_SESSION['login'] ;
 
-
+// Si l'utilisateur est connecté, on affiche la page d'accueil format "connecté"
 if (isset($_SESSION['login']))
     $layout = new Layout("gui/layoutLogged.html",);
 else
     $layout = new Layout("gui/layout.html");
-
+//page d'accueil
 if ( '/' == $uri || '/index.php' == $uri || '/logout' == $uri) {
     // affichage de la page de connexion
 
@@ -92,6 +93,7 @@ if ( '/' == $uri || '/index.php' == $uri || '/logout' == $uri) {
 
     $viewHome->display();
 }
+//page de création de compte
 elseif ('/creation' == $uri) {
     if (($resultat = $controller->createUserAction($apiUserCreation, $userCreation, $_GET['mail'], $_GET['login'], $_GET['password'])) == false) {
         $_SESSION['error'] = 'Erreur lors de la création du compte, username pris.';
@@ -102,6 +104,7 @@ elseif ('/creation' == $uri) {
     }
 
 }
+//page de connexion à son compte
 elseif ('/seConnecter' == $uri) {
     $vueLogin = new ViewLogin( $layout );
 
@@ -121,17 +124,21 @@ elseif (preg_match('/\/product\/[0-9]+/', $uri)) {
 
     $viewProduct->display();
 }
+//action permettant d'ajouter un produit à l'aide de son id au panier d'un compte
 elseif (preg_match('/\/product\/add\/[0-9]+/', $uri)) {
     $idProduct = explode('/', $uri)[3];
     $controller->addToCartAction($apiCartCreation, $cartCreation, $idProduct, $_SESSION['id']);
     header("Location: /product/".$idProduct);
 }
+//action permettant de supprimer un produit à l'aide de son id au panier d'un compte
 elseif (preg_match('/\/product\/remove\/[0-9]+/', $uri)) {
     $idProduct = explode('/', $uri)[3];
     $controller->removeFromCartAction($apiCartCreation, $cartCreation, $idProduct, $_SESSION['id']);
     header("Location: /cart");
 }
+//page du panier
 elseif('/cart' == $uri){
+    //si l'utilisateur n'est pas connecté, on le redirige vers la page d'erreur
     if (!isset($_SESSION['login'])) {
         var_dump($_SESSION['login']);
         $_SESSION['error']='Vous devez être connecté pour accéder à votre panier';
@@ -143,14 +150,17 @@ elseif('/cart' == $uri){
 
     $viewCart->display();
 }
+//page de finalisation de commande
 elseif('/order' == $uri && isset($_SESSION['login'])) {
     $vueOrder = new ViewOrder( $layout );
     $vueOrder->display();
 }
+//page d'erreur
 elseif ( '/error' == $uri ){
     $vueError = new ViewError( $layout, $_SESSION['error'], $redirect );
     $vueError->display();
 }
+//si l'url n'existe pas on affiche une page d'erreur
 else {
     header('Status: 404 Not Found');
     echo '<html><body><h1>My Page NotFound</h1></body></html>';

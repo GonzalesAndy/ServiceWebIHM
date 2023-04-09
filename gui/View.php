@@ -1,6 +1,5 @@
 <?php
 namespace gui;
-
 abstract class View
 {
     protected $title = '';

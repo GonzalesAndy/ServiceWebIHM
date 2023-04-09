@@ -9,10 +9,12 @@ class Presenter
         $this->productCheck = $productCheck;
     }
 
-
+    //Permet de récupérer tous les produits et les transformer en HTML
     public function getAllProductsHTML() {
         $content = null;
+        //Si il y a des produits
         if ($this->productCheck->getProductsTxt() != null) {
+            //On les affiche
             foreach ($this->productCheck->getProductsTxt() as $product) {
                 $content .= "<div class='product'>
                                 <img src='/gui/img/".$product['imgPath']."' alt='Image du produit'>
@@ -21,14 +23,19 @@ class Presenter
                             </div>";
             }   
         }
+        //Sinon on affiche un message d'erreur
         if ($content == null)
             $content = "<tr><td colspan='6'>Aucun produit trouvé</td></tr>";
+        //On retourne le contenu
         return $content;
     }
 
+    //Permet de récupérer un produit et le transformer en HTML
     public function getProductPageHTML() {
         $content = null;
+        //Si il y a un produit
         if ($this->productCheck->getProductsTxt() != null) {
+            //On l'affiche
             $product = $this->productCheck->getProductsTxt();
             $content .= "<main><div class='productContainer'>
             <div class='singleProduct'>
@@ -48,17 +55,20 @@ class Presenter
             </div>
           </div></main>';";
         }
+        //Sinon on affiche un message d'erreur
         if ($content == null)
             $content = "<tr><td colspan='6'>Aucun produit trouvé</td></tr>";
         return $content;
     }
 
+    //Permet de récupérer le panier et le transformer en HTML
     public function getCartPageHTML() {
-      $content = null;
-      $totalPrice= 0.0;
-      $totalArticle= 0;
+      $content = null; //Contenu de la page
+      $totalPrice= 0.0; //Prix total
+      $totalArticle= 0; //Nombre d'article total
+      //Si il y a des produits
       if($this->productCheck->getProductsTxt() != null) {
-
+        //On les affiche
         foreach ($this->productCheck->getProductsTxt() as $product) {
 
           $content .= '<div class="cart-item">
@@ -72,16 +82,17 @@ class Presenter
                     <label for="quantity">Quantité:'.$product['quantity'].'</label>
                 </div>
             </div>';
-            $totalPrice += $product['price']*$product['quantity'];
-            $totalArticle += $product['quantity'];
+            $totalPrice += $product['price']*$product['quantity']; //On ajoute le prix du produit au prix total
+            $totalArticle += $product['quantity']; //On ajoute la quantité du produit au nombre d'article total
             
         }
       }
+      //On ajoute le récapitulatif du panier
       $content .= '<div class="cart-summary">
                       <h3>Total ('.$totalArticle.' article) : '.$totalPrice.' €</h3>
                       <a href="/order"><button>Passer à la caisse</button></a>
                   </div>';
-
+      //On renvoie le contenu
       return $content;
     }
 }

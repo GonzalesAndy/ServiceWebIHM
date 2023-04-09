@@ -8,7 +8,7 @@ class Layout
     {
         $this->templateFile = $templateFile;
     }
-
+    // Affiche la page complète en fonction du template
     public function display( $title, $connexion, $content )
     {
         $page = file_get_contents( $this->templateFile );

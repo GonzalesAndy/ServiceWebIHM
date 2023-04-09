@@ -2,7 +2,7 @@
 namespace gui;
 
 include_once "View.php";
-
+// Interface graphique de la page de création de compte
 class ViewCreate extends View
 {
     public function __construct($layout)

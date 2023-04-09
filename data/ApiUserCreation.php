@@ -7,8 +7,9 @@ include_once "domain/User.php";
 include_once "service/UserCreationInterface.php";
 class ApiUserCreation implements UserCreationInterface {
 
+    //Permet de créer un utilisateur
     public function createUser($mail, $name, $pwd) {
-        //check if the username is already taken
+        //Regarde si le nom d'utilisateur est déjà pris
         $urlCheck = "http://localhost:8080/user-1.0-SNAPSHOT/api/users/";
 
         $chCheck = curl_init($urlCheck);
@@ -20,7 +21,7 @@ class ApiUserCreation implements UserCreationInterface {
         curl_close($chCheck);
 
         $resultCheck = json_decode($responseCheck, true);
-
+        //renvoie false s'il est déjà pris
         foreach ($resultCheck as $user) {
             if ($user['name'] == $name) {
                 return false;
@@ -28,7 +29,7 @@ class ApiUserCreation implements UserCreationInterface {
         }
         
         
-
+        //Crée l'utilisateur
         $url = "http://localhost:8080/user-1.0-SNAPSHOT/api/users";
 
         $ch = curl_init($url);
@@ -40,10 +41,10 @@ class ApiUserCreation implements UserCreationInterface {
         $response = curl_exec($ch);
 
         curl_close($ch);
-        //for each create a User.php object
+        //Crée l'utilisateur en local
         $result = json_decode($response, true);
         $user = new User($result['id'], $result['mail'], $result['name'], $result['pwd']);
-
+        //Renvoie "User created" si tout s'est bien passé
         return "User created";
     }
 

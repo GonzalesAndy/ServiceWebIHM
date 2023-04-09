@@ -3,6 +3,7 @@ namespace gui;
 
 include_once "View.php";
 
+// Interface graphique de la page de produit
 class ViewProduct extends View
 {
     public function __construct($layout, $presenter, $id)

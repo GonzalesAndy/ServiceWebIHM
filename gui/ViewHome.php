@@ -2,7 +2,7 @@
 namespace gui;
 
 include_once "View.php";
-
+//Interface graphique de la page d'accueil
 class ViewHome extends View
 {
     public function __construct($layout, $presenter)
