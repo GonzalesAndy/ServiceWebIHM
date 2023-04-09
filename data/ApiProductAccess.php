@@ -4,10 +4,10 @@ namespace data;
 
 
 use domain\{Product};
-use service\ProductCheckingInterface;
+use service\ProductAccessInterface;
 include_once "domain/Product.php";
-include_once "service/ProductCheckingInterface.php";
-class ApiProductAccess implements ProductCheckingInterface {
+include_once "service/ProductAccessInterface.php";
+class ApiProductAccess implements ProductAccessInterface {
 
     //Permet de récupérer tous les produits
     public function getAllProducts() {

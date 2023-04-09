@@ -2,10 +2,10 @@
 namespace data;
 
 use domain\{User};
-use service\UserCheckingInterface;
-include_once "service/UserCheckingInterface.php";
+use service\UserAccessInterface;
+include_once "service/UserAccessInterface.php";
 include_once "domain/User.php";
-class ApiUserAccess implements UserCheckingInterface {
+class ApiUserAccess implements UserAccessInterface {
 
     //Permet de vérifier si le mot de passe et le nom correspondent à un compte
     public function authenticate($name, $pwd) {

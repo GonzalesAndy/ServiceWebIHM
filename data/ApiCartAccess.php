@@ -1,8 +1,8 @@
 <?php
 namespace data;
-use service\CartCheckingInterface;
-include_once 'service/CartCheckingInterface.php';
-class ApiCartAccess  implements CartCheckingInterface {
+use service\CartAccessInterface;
+include_once 'service/CartAccessInterface.php';
+class ApiCartAccess  implements CartAccessInterface {
 
     // permet d'obtenir le panier d'un utilisateur
     public function getCart($userId) {

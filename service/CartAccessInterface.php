@@ -2,7 +2,7 @@
 
 namespace service;
 
-interface CartCheckingInterface
+interface CartAccessInterface
 {
     public function getCart($userId);
 }

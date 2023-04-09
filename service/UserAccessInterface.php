@@ -2,7 +2,7 @@
 
 namespace service;
 
-interface UserCheckingInterface
+interface UserAccessInterface
 {
     public function authenticate($name, $pwd);
 

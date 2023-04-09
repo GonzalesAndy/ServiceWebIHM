@@ -2,7 +2,7 @@
 
 namespace service;
 
-interface ProductCheckingInterface
+interface ProductAccessInterface
 {
     public function getAllProducts();
     public function getProduct($id);
