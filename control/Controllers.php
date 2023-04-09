@@ -4,9 +4,9 @@ namespace control;
 class Controllers
 {
 
-    public function authenticateAction($login, $password, $data, $annoncesCheck)
+    public function authenticateAction($login, $password, $api, $userCheck)
     {
-        return $annoncesCheck->authenticate($login, $password, $data);
+        return $userCheck->authenticate($login, $password, $api);
     }
 
 

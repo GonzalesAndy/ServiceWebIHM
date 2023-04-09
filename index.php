@@ -4,6 +4,7 @@
 include_once 'data/DataAccess.php';
 include_once 'data/ApiProductAccess.php';
 include_once 'data/ApiUserCreation.php';
+include_once 'data/ApiUserAccess.php';
 
 include_once 'control/Controllers.php';
 include_once 'control/Presenter.php';
@@ -11,6 +12,7 @@ include_once 'control/Presenter.php';
 include_once 'service/AnnoncesChecking.php';
 include_once 'service/UserCreation.php';
 include_once 'service/ProductChecking.php';
+include_once 'service/UserChecking.php';
 
 include_once 'gui/Layout.php';
 include_once 'gui/ViewLogin.php';
@@ -23,16 +25,19 @@ include_once 'gui/ViewCreate.php';
 
 use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct, ViewCreate};
 use control\{Controllers, Presenter};
-use data\{DataAccess, ApiProductAccess, ApiUserCreation};
-use service\{UserCreation, ProductChecking, AnnoncesChecking};
+use data\{DataAccess, ApiProductAccess, ApiUserCreation, ApiUserAccess};
+use service\{UserCreation, ProductChecking, AnnoncesChecking, UserChecking};
 
 $apiProduct = new ApiProductAccess();
 $apiUserCreation = new ApiUserCreation();
+$apiUserAccess = new ApiUserAccess();
+
 $controller = new Controllers();
 $productCheck = new ProductChecking();
 $userCreation = new UserCreation() ;
 $presenter = new Presenter($productCheck);
 $annoncesCheck = new AnnoncesChecking();
+$userCheck = new UserChecking();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -45,11 +50,9 @@ if( !isset($_SESSION['login']) ) {
     if( isset($_POST['login']) && isset($_POST['password']) )
     {
         // Vérification de l'authentification si la précédente page était le formulaire de connexion
-        
-        if( !$controller->authenticateAction($_POST['login'], $_POST['password'], $data, $annoncesCheck) ){
-            $error_msg='Mauvais login ou password';
-            $redirect = '/annonces/index.php';
-            $uri='/annonces/index.php/error' ;
+        if( !$controller->authenticateAction($_POST['login'], $_POST['password'], $apiUserAccess, $userCheck) ){
+            $_SESSION['error'] = 'Erreur d\'authentification';
+            header('Location: /error');
         }
         // Enregistrement des informations de session après une authentification réussie
         else {
@@ -67,6 +70,7 @@ if (isset($_SESSION['login']))
     $layout = new Layout("gui/layoutLogged.html",);
 else
     $layout = new Layout("gui/layout.html");
+var_dump($_SESSION);
 
 if ( '/' == $uri || '/index.php' == $uri || '/logout' == $uri) {
     // affichage de la page de connexion
