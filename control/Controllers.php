@@ -30,7 +30,7 @@ class Controllers
         foreach ($result as $product) {
             $productIds[] = $product['id_product'];
         }
-        $productChecking->getCartProduct($apiProduct, $result['id_products']);
+        $productChecking->getCartProduct($apiProduct, $productIds);
     }
 
     public function createUserAction($api, $userCreation, $mail, $name, $pwd)

@@ -31,12 +31,24 @@ class ProductChecking
 
     public function getCartProduct($data, $ids)
     {
-        //id is an array
-
         $this->productsTxt = array();
         foreach ($ids as $idProduct) {
             $product = $data->getProduct($idProduct);
-            $this->productsTxt[] = array('id' => $idProduct, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+
+            // Check if the product is already in the array
+            $productExists = false;
+            for ($i = 0; $i < count($this->productsTxt); $i++) {
+                if ($this->productsTxt[$i]['id'] === $idProduct) {
+                    // Increase the quantity of the existing product
+                    $this->productsTxt[$i]['quantity']++;
+                    $productExists = true;
+                    break;
+                }
+            }
+            if (!$productExists) {
+                $this->productsTxt[] = array('id' => $idProduct, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType(), 'quantity' => 1);
+            }
         }
     }
+
 }

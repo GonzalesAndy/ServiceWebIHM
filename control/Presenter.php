@@ -52,4 +52,36 @@ class Presenter
             $content = "<tr><td colspan='6'>Aucun produit trouvé</td></tr>";
         return $content;
     }
+
+    public function getCartPageHTML() {
+      $content = null;
+      $totalPrice= 0.0;
+      $totalArticle= 0;
+      if($this->productCheck->getProductsTxt() != null) {
+
+        foreach ($this->productCheck->getProductsTxt() as $product) {
+
+          $content .= '<div class="cart-item">
+                <img src="/gui/img/quest2.png" alt="Image du produit">
+                <div class="cart-item-info">
+                    <div class="flex">
+                        <a id="panierHref" href=/product/'.$product['id'].'><h3>'.$product['name'].'</h3></a>
+                        <a href=/product/remove/'.$product['id'].'><button>Supprimer</button></a>
+                    </div>
+                    <p>Prix: '.$product['price'].' €</p>
+                    <label for="quantity">Quantité:'.$product['quantity'].'</label>
+                </div>
+            </div>';
+            $totalPrice += $product['price']*$product['quantity'];
+            $totalArticle += $product['quantity'];
+            
+        }
+      }
+      $content .= '<div class="cart-summary">
+                      <h3>Total ('.$totalArticle.' article) : '.$totalPrice.' €</h3>
+                      <a href="/order"><button>Passer à la caisse</button></a>
+                  </div>';
+
+      return $content;
+    }
 }

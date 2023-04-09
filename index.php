@@ -126,6 +126,11 @@ elseif (preg_match('/\/product\/add\/[0-9]+/', $uri)) {
     $controller->addToCartAction($apiCartCreation, $cartCreation, $idProduct, $_SESSION['id']);
     header("Location: /product/".$idProduct);
 }
+elseif (preg_match('/\/product\/remove\/[0-9]+/', $uri)) {
+    $idProduct = explode('/', $uri)[3];
+    $controller->removeFromCartAction($apiCartCreation, $cartCreation, $idProduct, $_SESSION['id']);
+    header("Location: /cart");
+}
 elseif('/cart' == $uri){
     if (!isset($_SESSION['login'])) {
         var_dump($_SESSION['login']);
@@ -134,7 +139,7 @@ elseif('/cart' == $uri){
         header('Location: /error');
     }
     $controller->cartPageAction($apiProduct,$apiCartAccess,$productCheck,$cartCheck,$_SESSION['id']);
-    $viewCart = new ViewCart( $layout );
+    $viewCart = new ViewCart( $layout, $presenter );
 
     $viewCart->display();
 }

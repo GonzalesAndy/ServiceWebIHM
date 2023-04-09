@@ -51,6 +51,15 @@ nav a:hover {
     text-decoration: underline;
 }
 
+#panierHref {
+    text-decoration: none;
+    color: inherit;
+}
+
+#panierHref:hover {
+    color: #febd69;
+}
+
 #categoryBtn {
     background-color: gainsboro;
     color: gray;
