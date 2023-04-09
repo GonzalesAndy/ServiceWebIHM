@@ -49,14 +49,15 @@ if( !isset($_SESSION['login']) ) {
     // Si la page d'origine est le formulaire de connexion ou de création de compte
     if( isset($_POST['login']) && isset($_POST['password']) )
     {
-        // Vérification de l'authentification si la précédente page était le formulaire de connexion
-        if( !$controller->authenticateAction($_POST['login'], $_POST['password'], $apiUserAccess, $userCheck) ){
+        $resultLog = $controller->authenticateAction($_POST['login'], $_POST['password'], $apiUserAccess, $userCheck);
+        if( $resultLog  == false){
             $_SESSION['error'] = 'Erreur d\'authentification';
             header('Location: /error');
         }
         // Enregistrement des informations de session après une authentification réussie
         else {
             $_SESSION['login'] = $_POST['login'] ;
+            $_SESSION['id'] = $resultLog;
             $login = $_SESSION['login'];
         }
     }
