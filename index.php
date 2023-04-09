@@ -1,18 +1,20 @@
 <?php
 
 // charge et initialise les bibliothèques globales
-include_once 'data/DataAccess.php';
 include_once 'data/ApiProductAccess.php';
 include_once 'data/ApiUserCreation.php';
 include_once 'data/ApiUserAccess.php';
+include_once 'data/ApiCartCreation.php';
+include_once 'data/ApiCartAccess.php';
 
 include_once 'control/Controllers.php';
 include_once 'control/Presenter.php';
 
-include_once 'service/AnnoncesChecking.php';
 include_once 'service/UserCreation.php';
 include_once 'service/ProductChecking.php';
 include_once 'service/UserChecking.php';
+include_once 'service/CartCreation.php';
+include_once 'service/CartChecking.php';
 
 include_once 'gui/Layout.php';
 include_once 'gui/ViewLogin.php';
@@ -25,19 +27,22 @@ include_once 'gui/ViewCreate.php';
 
 use gui\{ViewLogin, ViewError, Layout, ViewHome, ViewCart, ViewOrder, ViewProduct, ViewCreate};
 use control\{Controllers, Presenter};
-use data\{DataAccess, ApiProductAccess, ApiUserCreation, ApiUserAccess};
-use service\{UserCreation, ProductChecking, AnnoncesChecking, UserChecking};
+use data\{ApiProductAccess, ApiUserCreation, ApiUserAccess, ApiCartCreation, ApiCartAccess};
+use service\{UserCreation, ProductChecking, UserChecking, CartCreation, CartChecking};
 
 $apiProduct = new ApiProductAccess();
 $apiUserCreation = new ApiUserCreation();
 $apiUserAccess = new ApiUserAccess();
+$apiCartCreation = new ApiCartCreation();
+$apiCartAccess = new ApiCartAccess();
 
 $controller = new Controllers();
 $productCheck = new ProductChecking();
 $userCreation = new UserCreation() ;
 $presenter = new Presenter($productCheck);
-$annoncesCheck = new AnnoncesChecking();
 $userCheck = new UserChecking();
+$cartCreation = new CartCreation();
+$cartCheck = new CartChecking();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -71,7 +76,6 @@ if (isset($_SESSION['login']))
     $layout = new Layout("gui/layoutLogged.html",);
 else
     $layout = new Layout("gui/layout.html");
-var_dump($_SESSION);
 
 if ( '/' == $uri || '/index.php' == $uri || '/logout' == $uri) {
     // affichage de la page de connexion
@@ -117,6 +121,11 @@ elseif (preg_match('/\/product\/[0-9]+/', $uri)) {
 
     $viewProduct->display();
 }
+elseif (preg_match('/\/product\/add\/[0-9]+/', $uri)) {
+    $idProduct = explode('/', $uri)[3];
+    $controller->addToCartAction($apiCartCreation, $cartCreation, $idProduct, $_SESSION['id']);
+    header("Location: /product/".$idProduct);
+}
 elseif('/cart' == $uri){
     if (!isset($_SESSION['login'])) {
         var_dump($_SESSION['login']);
@@ -124,6 +133,7 @@ elseif('/cart' == $uri){
         $redirect = '/';
         header('Location: /error');
     }
+    $controller->cartPageAction($apiProduct,$apiCartAccess,$productCheck,$cartCheck,$_SESSION['id']);
     $viewCart = new ViewCart( $layout );
 
     $viewCart->display();

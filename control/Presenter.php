@@ -43,7 +43,7 @@ class Presenter
                 <p class='product-price'>Prix: " . $product['price'] . "</p>
                 <p class='product-stock'>Stock restant: " . $product['stock'] . "</p>
                 <p class='product-unit'>Unité de mesure: ". $product['quantityType'] . "</p>
-                <button class='add-to-cart-button'>Ajouter au panier</button>
+                <a href=/product/add/".$product['id']." ><button class='add-to-cart-button'>Ajouter au panier</button></a>
               </div>
             </div>
           </div></main>';";

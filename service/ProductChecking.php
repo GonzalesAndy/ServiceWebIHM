@@ -26,6 +26,17 @@ class ProductChecking
     {
         $product = $data->getProduct($id);
 
-        $this->productsTxt = array('id' => $product->getId(), 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+        $this->productsTxt = array('id' => $id, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+    }
+
+    public function getCartProduct($data, $ids)
+    {
+        //id is an array
+
+        $this->productsTxt = array();
+        foreach ($ids as $idProduct) {
+            $product = $data->getProduct($idProduct);
+            $this->productsTxt[] = array('id' => $idProduct, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+        }
     }
 }
