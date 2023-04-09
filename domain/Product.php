@@ -11,13 +11,16 @@ class Product {
     protected $stock;
     protected $quantityType;
 
-    public function __construct($id, $name, $price, $description, $stock, $quantityType) {
+    protected $imgPath;
+
+    public function __construct($id, $name, $price, $description, $stock, $quantityType, $imgPath) {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
         $this->description = $description;
         $this->stock = $stock;
         $this->quantityType = $quantityType;
+        $this->imgPath = $imgPath;
     }
 
     public function getId() {
@@ -42,5 +45,9 @@ class Product {
 
     public function getQuantityType() {
         return $this->quantityType;
+    }
+
+    public function getImgPath() {
+        return $this->imgPath;
     }
 }

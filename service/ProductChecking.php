@@ -18,7 +18,7 @@ class ProductChecking
         $this->productsTxt = array();
         
         foreach ($products as $product) {
-            $this->productsTxt[] = array('id' => $product->getId(), 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+            $this->productsTxt[] = array('id' => $product->getId(), 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType(), 'imgPath' => $product->getImgPath());
         }
     }
 
@@ -26,7 +26,7 @@ class ProductChecking
     {
         $product = $data->getProduct($id);
 
-        $this->productsTxt = array('id' => $id, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType());
+        $this->productsTxt = array('id' => $id, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType(), 'imgPath' => $product->getImgPath());
     }
 
     public function getCartProduct($data, $ids)
@@ -46,7 +46,7 @@ class ProductChecking
                 }
             }
             if (!$productExists) {
-                $this->productsTxt[] = array('id' => $idProduct, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType(), 'quantity' => 1);
+                $this->productsTxt[] = array('id' => $idProduct, 'name' => $product->getName(), 'price' => $product->getPrice(), 'description' => $product->getDescription(), 'stock' => $product->getStock(), 'quantityType' => $product->getQuantityType(), 'quantity' => 1, 'imgPath' => $product->getImgPath());
             }
         }
     }

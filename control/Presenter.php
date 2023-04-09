@@ -15,7 +15,7 @@ class Presenter
         if ($this->productCheck->getProductsTxt() != null) {
             foreach ($this->productCheck->getProductsTxt() as $product) {
                 $content .= "<div class='product'>
-                                <img src='/gui/img/quest2.png' alt='Image du produit'>
+                                <img src='/gui/img/".$product['imgPath']."' alt='Image du produit'>
                                 <a href=/product/". $product['id'] ."><h3>" . $product['name'] . "</h3></a>
                                 <p class=prix>" . $product['price'] . "<span style='position:relative; top:-0.50em;font-size: 18px;'>€</p>
                             </div>";
@@ -30,10 +30,10 @@ class Presenter
         $content = null;
         if ($this->productCheck->getProductsTxt() != null) {
             $product = $this->productCheck->getProductsTxt();
-            $content .= "'<main><div class='productContainer'>
+            $content .= "<main><div class='productContainer'>
             <div class='singleProduct'>
               <div class='product-image'>
-                <img src='/gui/img/quest2.png' alt='Image du produit' width='100%'>
+                <img src='/gui/img/".$product['imgPath']."' alt='Image du produit' width='100%'>
               </div>
               <div class='product-details'>
                 <h1 class='product-title'>". $product['name'] ."</h1>
@@ -62,7 +62,7 @@ class Presenter
         foreach ($this->productCheck->getProductsTxt() as $product) {
 
           $content .= '<div class="cart-item">
-                <img src="/gui/img/quest2.png" alt="Image du produit">
+                <img src="/gui/img/'.$product['imgPath'].'" alt="Image du produit">
                 <div class="cart-item-info">
                     <div class="flex">
                         <a id="panierHref" href=/product/'.$product['id'].'><h3>'.$product['name'].'</h3></a>

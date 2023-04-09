@@ -20,7 +20,7 @@ class ApiProductAccess {
         $products = array();
         
         foreach ($result as $product) {
-            $products[] = new Product($product['id_product'], $product['name'], $product['price'], $product['description'], $product['stock'], $product['quantityType']);
+            $products[] = new Product($product['id_product'], $product['name'], $product['price'], $product['description'], $product['stock'], $product['quantityType'], $product['imgPath']);
         }
 
         return $products;
@@ -39,7 +39,7 @@ class ApiProductAccess {
         curl_close($ch);
         //for each create a Product.php object
         $result = json_decode($response, true);
-        $product = new Product($result['id_product'], $result['name'], $result['price'], $result['description'], $result['stock'], $result['quantityType']);
+        $product = new Product($result['id_product'], $result['name'], $result['price'], $result['description'], $result['stock'], $result['quantityType'], $result['imgPath']);
 
         return $product;
     }
